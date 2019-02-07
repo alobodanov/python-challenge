@@ -2,6 +2,7 @@ import os
 import csv
 
 budget_data_csv = os.path.join("./", "budget_data.csv")
+budget_data_result_csv = os.path.join("./", "budget_data_result.csv")
 month_total = 0
 monthy_change = []
 data = []
@@ -39,3 +40,15 @@ with open(budget_data_csv, newline="") as csv_file:
     print(f'Average Change: ${( int(greatest_value) - int(lowest_value )) / int(month_total) - 2}')
     print(f'Greatest Increase in Profits: {data[monthy_change.index(greatest_value)]} (${greatest_value})')
     print(f'Greatest Decrease in Profits: {data[monthy_change.index(lowest_value)]} (${lowest_value})')
+
+csv_file.close()
+
+file = open(budget_data_result_csv, "w")
+file.write('Financial Analysis\n')
+file.write('----------------------------\n')
+file.write(f'Total Month: {month_total}\n')
+file.write(f'Total: ${net_total}\n')
+file.write(f'Average Change: ${( int(greatest_value) - int(lowest_value )) / int(month_total) - 2}\n')
+file.write(f'Greatest Increase in Profits: {data[monthy_change.index(greatest_value)]} (${greatest_value})\n')
+file.write(f'Greatest Decrease in Profits: {data[monthy_change.index(lowest_value)]} (${lowest_value})\n')
+file.close()
