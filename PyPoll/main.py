@@ -1,15 +1,15 @@
 import os
 import csv
 
-election_data_csv = os.path.join("./", "election_data.csv")
-election_data_result_csv = os.path.join("./", "election_data_result.csv")
+election_data_csv = os.path.join('./', 'election_data.csv')
+election_data_result_csv = os.path.join('./', 'election_data_result.csv')
 
 total_votes = 0
 candidates = {}
 votes_per_candidate = []
 
-with open(election_data_csv, newline="") as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=",")
+with open(election_data_csv, newline='') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
     csv_header = next(csv_file)
 
     for row in csv_reader:
@@ -38,11 +38,12 @@ with open(election_data_csv, newline="") as csv_file:
 
 csv_file.close()
 
-file = open(election_data_result_csv, "w")
+file = open(election_data_result_csv, 'w')
 file.write('Election Results\n')
 file.write('----------------------\n')
 file.write(f'Total Votes: {total_votes}\n')
 file.write('----------------------\n')
+
 for candidate in candidates:
     file.write(f'{candidate}: {(candidates[candidate] / total_votes) * 100:.3f}% ({candidates[candidate]})\n')
 
