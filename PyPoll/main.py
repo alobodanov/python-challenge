@@ -33,7 +33,7 @@ with open(election_data_csv, newline="") as csv_file:
         print(f'{candidate}: {(candidates[candidate]/total_votes) * 100:.3f}% ({candidates[candidate]})')
 
     print('-----------------------')
-    print(f'Winner: ')
+    print(f'Winner: {max(candidates, key=candidates.get)}')
     print('-----------------------')
 
 csv_file.close()
@@ -47,5 +47,5 @@ for candidate in candidates:
     file.write(f'{candidate}: {(candidates[candidate] / total_votes) * 100:.3f}% ({candidates[candidate]})\n')
 
 file.write('-----------------------\n')
-file.write(f'Winner: \n')
+file.write(f'Winner: {max(candidates, key=candidates.get)}\n')
 file.write('-----------------------\n')
