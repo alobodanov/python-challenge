@@ -1,44 +1,62 @@
 import os
 import csv
 
-budget_data_csv = os.path.join('./', 'budget_data.csv')
-budget_data_result_csv = os.path.join('./', 'budget_data_result.csv')
 
-total_month = []
-total_change = []
-monthly_change = []
+class Budget:
 
-with open(budget_data_csv, newline='') as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    csv_header = next(csv_file)
+    def __init__(self):
+        self.total_month = []
+        self.total_change = []
+        self.monthly_change = []
+        self.budget_data_csv = os.path.join('./', 'budget_data.csv')
+        self.budget_data_result_csv = os.path.join('./', 'budget_data_result.csv')
 
-    for row in csv_reader:
-        total_month.append(row[0])
-        total_change.append(int(row[1]))
+    def open_file(self):
+        with open(self.budget_data_csv, newline='') as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            next(csv_file)
+            self.read_data(csv_reader)
 
-    for i in range(len(total_change) - 1):
-        monthly_change.append(total_change[i + 1] - total_change[i])
+    def read_data(self, reader):
+        for row in reader:
+            self.total_month.append(row[0])
+            self.total_change.append(int(row[1]))
 
-    print('Financial Analysis')
-    print('----------------------------')
-    print(f'Total Month: {len(total_month)}')
-    print(f'Total: ${sum(total_change)}')
-    print(f'Average Change: ${sum(monthly_change) / len(monthly_change):.2f}')
-    print(f'Greatest Increase in Profits: '
-          f'{total_month[monthly_change.index(max(monthly_change)) + 1]} (${max(monthly_change)})')
-    print(f'Greatest Decrease in Profits: '
-          f'{total_month[monthly_change.index(min(monthly_change)) + 1]} (${min(monthly_change)})')
+        self.average_change()
 
-csv_file.close()
+    def average_change(self):
+        for i in range(len(self.total_change) - 1):
+            self.monthly_change.append(self.total_change[i + 1] - self.total_change[i])
 
-file = open(budget_data_result_csv, 'w')
-file.write('Financial Analysis\n')
-file.write('----------------------------\n')
-file.write(f'Total Month: {len(total_month)}\n')
-file.write(f'Total: ${sum(total_change)}\n')
-file.write(f'Average Change: ${sum(monthly_change) / len(monthly_change):.2f}\n')
-file.write(f'Greatest Increase in Profits: '
-           f'{total_month[monthly_change.index(max(monthly_change)) + 1]} (${max(monthly_change)})\n')
-file.write(f'Greatest Decrease in Profits: '
-           f'{total_month[monthly_change.index(min(monthly_change)) + 1]} (${min(monthly_change)})\n')
-file.close()
+    def terminal_output(self):
+        print('Financial Analysis')
+        print('----------------------------')
+        print(f'Total Month: {len(self.total_month)}')
+        print(f'Total: ${sum(self.total_change)}')
+        print(f'Average Change: ${sum(self.monthly_change) / len(self.monthly_change):.2f}')
+        print(f'Greatest Increase in Profits: '
+              f'{self.total_month[self.monthly_change.index(max(self.monthly_change)) + 1]} '
+              f'(${max(self.monthly_change)})')
+        print(f'Greatest Decrease in Profits: '
+              f'{self.total_month[self.monthly_change.index(min(self.monthly_change)) + 1]} '
+              f'(${min(self.monthly_change)})')
+
+    def file_output(self):
+        with open(self.budget_data_result_csv, 'w') as file:
+            file.write('Financial Analysis\n')
+            file.write('----------------------------\n')
+            file.write(f'Total Month: {len(self.total_month)}\n')
+            file.write(f'Total: ${sum(self.total_change)}\n')
+            file.write(f'Average Change: ${sum(self.monthly_change) / len(self.monthly_change):.2f}\n')
+            file.write(f'Greatest Increase in Profits: '
+                       f'{self.total_month[self.monthly_change.index(max(self.monthly_change)) + 1]} '
+                       f'(${max(self.monthly_change)})\n')
+            file.write(f'Greatest Decrease in Profits: '
+                       f'{self.total_month[self.monthly_change.index(min(self.monthly_change)) + 1]} '
+                       f'(${min(self.monthly_change)})\n')
+
+
+Budget = Budget()
+Budget.open_file()
+Budget.terminal_output()
+Budget.file_output()

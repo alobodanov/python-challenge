@@ -1,52 +1,65 @@
 import os
 import csv
 
-election_data_csv = os.path.join('./', 'election_data.csv')
-election_data_result_csv = os.path.join('./', 'election_data_result.csv')
 
-total_votes = 0
-candidates = {}
-votes_per_candidate = []
+class Election:
 
-with open(election_data_csv, newline='') as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    csv_header = next(csv_file)
+    def __init__(self):
+        self.election_data_csv = os.path.join('./', 'election_data.csv')
+        self.election_data_result_csv = os.path.join('./', 'election_data_result.csv')
+        self.total_votes = 0
+        self.candidates = {}
+        self.votes_per_candidate = []
 
-    for row in csv_reader:
-        if row:
-            total_votes = total_votes + 1
+    def open_file(self):
+        with open(self.election_data_csv, newline='') as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            next(csv_file)
+            self.create_candidates_dictionary(csv_reader)
 
-            try:
-                if row[2] in candidates:
-                    candidates[row[2]] = candidates[row[2]] + 1
-                else:
-                    candidates[row[2]] = 1
-            except IndexError:
-                continue
+    def create_candidates_dictionary(self, reader):
+        for row in reader:
+            if row:
+                self.total_votes = self.total_votes + 1
+                try:
+                    if row[2] in self.candidates:
+                        self.candidates[row[2]] = self.candidates[row[2]] + 1
+                    else:
+                        self.candidates[row[2]] = 1
+                except IndexError:
+                    continue
 
-    print('Election Results')
-    print('----------------------')
-    print(f'Total Votes: {total_votes}')
-    print('----------------------')
+    def terminal_output(self):
+        print('Election Results')
+        print('----------------------')
+        print(f'Total Votes: {self.total_votes}')
+        print('----------------------')
 
-    for candidate in candidates:
-        print(f'{candidate}: {(candidates[candidate]/total_votes) * 100:.3f}% ({candidates[candidate]})')
+        for candidate in self.candidates:
+            print(f'{candidate}: {(self.candidates[candidate]/self.total_votes) * 100:.3f}% '
+                  f'({self.candidates[candidate]})')
 
-    print('-----------------------')
-    print(f'Winner: {max(candidates, key=candidates.get)}')
-    print('-----------------------')
+        print('-----------------------')
+        print(f'Winner: {max(self.candidates, key=self.candidates.get)}')
+        print('-----------------------')
 
-csv_file.close()
+    def file_output(self):
+        with open(self.election_data_result_csv, 'w') as file:
+            file.write('Election Results\n')
+            file.write('----------------------\n')
+            file.write(f'Total Votes: {self.total_votes}\n')
+            file.write('----------------------\n')
 
-file = open(election_data_result_csv, 'w')
-file.write('Election Results\n')
-file.write('----------------------\n')
-file.write(f'Total Votes: {total_votes}\n')
-file.write('----------------------\n')
+            for candidate in self.candidates:
+                file.write(f'{candidate}: {(self.candidates[candidate] / self.total_votes) * 100:.3f}% '
+                           f'({self.candidates[candidate]})\n')
 
-for candidate in candidates:
-    file.write(f'{candidate}: {(candidates[candidate] / total_votes) * 100:.3f}% ({candidates[candidate]})\n')
+            file.write('-----------------------\n')
+            file.write(f'Winner: {max(self.candidates, key=self.candidates.get)}\n')
+            file.write('-----------------------\n')
 
-file.write('-----------------------\n')
-file.write(f'Winner: {max(candidates, key=candidates.get)}\n')
-file.write('-----------------------\n')
+
+Election = Election()
+Election.open_file()
+Election.terminal_output()
+Election.file_output()
