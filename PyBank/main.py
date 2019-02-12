@@ -9,7 +9,7 @@ class Budget:
         self.total_change = []
         self.monthly_change = []
         self.budget_data_csv = os.path.join('./', 'budget_data.csv')
-        self.budget_data_result_csv = os.path.join('./', 'budget_data_result.csv')
+        self.budget_data_result_csv = os.path.join('./', 'budget_data_result.txt')
 
     def open_file(self):
         with open(self.budget_data_csv, newline='') as csv_file:

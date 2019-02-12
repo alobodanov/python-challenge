@@ -6,7 +6,7 @@ class Election:
 
     def __init__(self):
         self.election_data_csv = os.path.join('./', 'election_data.csv')
-        self.election_data_result_csv = os.path.join('./', 'election_data_result.csv')
+        self.election_data_result_csv = os.path.join('./', 'election_data_result.txt')
         self.total_votes = 0
         self.candidates = {}
         self.votes_per_candidate = []
